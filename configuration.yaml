@@ -30,6 +30,7 @@ http:
   base_url: !secret base_url
 
 # Discover some devices automatically
+discovery:
 
 # Enables support for tracking state changes over time
 history:
