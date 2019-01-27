@@ -1,0 +1,26 @@
+vacuum.robyn:
+  friendly_name: Robyn
+group.all_automations:
+  friendly_name: Automatisierung
+  hidden: false
+group.automations: {}
+switch.licht_wohnzimmer:
+  name: Wohnzimmer
+  icon: mdi:lightbulb
+  google_assistant_type: light
+switch.licht_esszimmer:
+  name: Esszimmer
+  icon: mdi:lightbulb
+  google_assistant_type: light
+climate.thermostat_schlafzimmer_heat:
+  max_temp: 24
+  min_temp: 16
+climate.thermostat_bad_heat:
+  max_temp: 24
+  min_temp: 16
+climate.thermostat_kueche_heat:
+  max_temp: 24
+  min_temp: 16
+climate.thermostat_wzs_heat:
+  max_temp: 24
+  min_temp: 16

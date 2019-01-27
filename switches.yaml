@@ -1,0 +1,65 @@
+- platform: template
+  switches:
+      robyn_switch:
+        friendly_name: Robyn
+        entity_id: vacuum.robyn
+        value_template: "{{ not is_state('vacuum.robyn', 'docked') }}"
+        turn_on:
+          service: vacuum.start
+          data:
+            entity_id: vacuum.robyn
+        turn_off:
+          service: vacuum.return_to_base
+          data:
+            entity_id: vacuum.robyn
+
+- platform: template
+  switches:
+    heat_schlafzimmer:
+      value_template: "{{ is_state('climate.thermostat_schlafzimmer_heat', 'heat') }}"
+      turn_on:
+        service: climate.set_operation_mode
+        data:
+          entity_id: climate.thermostat_schlafzimmer_heat
+          operation_mode: "heat"
+      turn_off:
+        service: climate.set_operation_mode
+        data:
+          entity_id: climate.thermostat_schlafzimmer_heat
+          operation_mode: "off"
+    heat_wohnzimmer:
+      value_template: "{{ is_state('climate.thermostat_wzs_heat', 'heat') }}"
+      turn_on:
+        service: climate.set_operation_mode
+        data:
+          entity_id: climate.thermostat_wzs_heat
+          operation_mode: "heat"
+      turn_off:
+        service: climate.set_operation_mode
+        data:
+          entity_id: climate.thermostat_wzs_heat
+          operation_mode: "off"
+    heat_kueche:
+      value_template: "{{ is_state('climate.thermostat_kueche_heat', 'heat') }}"
+      turn_on:
+        service: climate.set_operation_mode
+        data:
+          entity_id: climate.thermostat_kueche_heat
+          operation_mode: "heat"
+      turn_off:
+        service: climate.set_operation_mode
+        data:
+          entity_id: climate.thermostat_kueche_heat
+          operation_mode: "off"
+    heat_bad:
+      value_template: "{{ is_state('climate.thermostat_bad_heat', 'heat') }}"
+      turn_on:
+        service: climate.set_operation_mode
+        data:
+          entity_id: climate.thermostat_bad_heat
+          operation_mode: "heat"
+      turn_off:
+        service: climate.set_operation_mode
+        data:
+          entity_id: climate.thermostat_bad_heat
+          operation_mode: "off"

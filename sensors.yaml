@@ -1,0 +1,149 @@
+- platform: template
+  sensors:
+    brightness_flur:
+      friendly_name: "Tageszeitdimmer Flur Helligkeit"
+      value_template: >-
+        {% if is_state('sun.sun', 'above_horizon') %}
+          40
+        {% elif states("sensor.time") >= '22:00' and states("sensor.time") < '23:00' %}
+          30
+        {% elif states("sensor.time") >= '23:00' or states("sensor.time") < '07:30' %}
+          5
+        {% elif states("sensor.time") >= '07:30' and states("sensor.time") < '10:00' %}
+          30
+        {% else %}
+          100
+        {% endif %}
+    battery_thermostat_schlafzimmer:
+      value_template: "{{ states.zwave.thermostat_schlafzimmer.attributes.battery_level }}"
+      unit_of_measurement: '%'
+      device_class: battery
+    battery_thermostat_kueche:
+      value_template: "{{ states.zwave.thermostat_kuche.attributes.battery_level }}"
+      unit_of_measurement: '%'
+      device_class: battery
+    battery_thermostat_wzs:
+      value_template: "{{ states.zwave.thermostat_wohnzimmer_s.attributes.battery_level }}"
+      unit_of_measurement: '%'
+      device_class: battery
+    battery_thermostat_wzsw:
+      value_template: "{{ states.zwave.thermostat_wohnzimmer_sw.attributes.battery_level }}"
+      unit_of_measurement: '%'
+      device_class: battery
+    battery_thermostat_wzw:
+      value_template: "{{ states.zwave.thermostat_wohnzimmer_w.attributes.battery_level }}"
+      unit_of_measurement: '%'
+      device_class: battery
+    battery_thermostat_bad:
+      value_template: "{{ states.zwave.thermostat_bad.attributes.battery_level }}"
+      unit_of_measurement: '%'
+      device_class: battery
+    battery_thermostat_wc:
+      value_template: "{{ states.zwave.thermostat_wc.attributes.battery_level }}"
+      unit_of_measurement: '%'
+      device_class: battery
+    mean_wohnzimmer_temperature:
+      value_template: "{{ ((states.sensor.thermostat_wzw_temperature.state | float + states.sensor.thermostat_wzsw_temperature.state | float + states.sensor.thermostat_wzs_temperature.state |float) / 3) | round(1)}}"
+      unit_of_measurement: '°C'
+      device_class: temperature
+
+- platform: time_date
+  display_options:
+    - 'time'
+    - 'date'
+
+- platform: darksky
+  api_key: !secret darksky_apikey
+  forecast:
+    - 1
+    - 2
+    - 3
+  language: de
+  monitored_conditions:
+    - summary
+    - hourly_summary
+    - temperature_min
+    - temperature_max
+    - icon
+    - temperature
+    - precip_probability
+  update_interval:
+    minutes: 10
+
+- platform: speedtest
+  monitored_conditions:
+    - ping
+    - download
+    - upload
+  hour:
+    - 0
+    - 6
+    - 12
+    - 18
+#  server_id: 8040
+
+- platform: mqtt
+  name: "Außen Temperatur"
+  unit_of_measurement: "°C"
+  expire_after: 700 # Sensor should update every 600s
+  state_topic: "homie/382b7803f781/temperature/degrees"
+  value_template: "{{ value | float | round(1) }}"
+  device_class: "temperature"
+
+- platform: mqtt
+  name: "Außen Luftfeuchtigkeit"
+  unit_of_measurement: "%"
+  expire_after: 700 # Sensor should update every 600s
+  state_topic: "homie/382b7803f781/humidity/percent RH"
+  value_template: "{{ value | float | round(0) }}"
+  device_class: "humidity"
+
+- platform: mqtt
+  name: "Außen Batteriespannung"
+  unit_of_measurement: "mV"
+  expire_after: 700 # Sensor should update every 600s
+  state_topic: "homie/382b7803f781/voltage/millivolts"
+
+- platform: octoprint
+  name: Fabrikator
+  monitored_conditions:
+    - Current State
+    - Temperatures
+    - Job Percentage
+    - Time Elapsed
+    - Time Remaining
+
+- platform: template
+  sensors:
+    vacuum_status:
+      friendly_name: "Robyn Status"
+      value_template: "{{ states.vacuum.robyn.state }}"
+
+- platform: template
+  sensors:
+    vacuum_battery:
+      friendly_name: "Robyn Battery"
+      value_template: "{{ states.vacuum.robyn.attributes.battery_level }}"
+      device_class: battery
+      unit_of_measurement: '%'
+
+- platform: template
+  sensors:
+    heizung_wzs_state:
+      friendly_name: "Status Heizung WZS"
+      value_template: "{{ states.climate.thermostat_wzs_heat.attributes.operation_mode }}"
+    heizung_wzs_setpoint:
+      friendly_name: "Setpoint Heizung WZS"
+      value_template: "{{ states.climate.thermostat_wzs_heat.attributes.temperature }}"
+    heizung_wzsw_state:
+      friendly_name: "Status Heizung WZSW"
+      value_template: "{{ states.climate.thermostat_wzsw_heat.attributes.operation_mode }}"
+    heizung_wzsw_setpoint:
+      friendly_name: "Setpoint Heizung WZSW"
+      value_template: "{{ states.climate.thermostat_wzsw_heat.attributes.temperature }}"
+    heizung_wzw_state:
+      friendly_name: "Status Heizung WZW"
+      value_template: "{{ states.climate.thermostat_wzw_heat.attributes.operation_mode }}"
+    heizung_wzw_setpoint:
+      friendly_name: "Setpoint Heizung WZW"
+      value_template: "{{ states.climate.thermostat_wzw_heat.attributes.temperature }}"

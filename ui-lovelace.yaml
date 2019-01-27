@@ -1,0 +1,105 @@
+resources:
+  - type: js
+    url: /local/kiosk.js
+#  - type: module
+#    url: /local/button-card.js
+#  - type: module
+#    url: /local/mini-graph-card/mini-graph-card.js?v=0.0.7
+  - type: module
+    url: /local/simple-thermostat/simple-thermostat.js?v=1
+title: Home
+views:
+  - cards:
+      - cards:
+          - entity: climate.thermostat_wzs_heat
+            type: 'custom:simple-thermostat'
+          - entity: climate.thermostat_schlafzimmer_heat
+            type: 'custom:simple-thermostat'
+          - entity: climate.thermostat_kueche_heat
+            type: 'custom:simple-thermostat'
+          - entity: climate.thermostat_bad_heat
+            type: 'custom:simple-thermostat'
+        type: vertical-stack
+      - cards:
+          - entity: light.dimmer_esszimmer
+            name: Esszimmer
+            tap_action:
+              action: toggle
+            type: entity-button
+          - entity: light.dimmer_wohnzimmer
+            name: Wohnzimmer
+            tap_action:
+              action: toggle
+            type: entity-button
+          - entity: light.stehlampe
+            icon: 'mdi:floor-lamp'
+            tap_action:
+              action: toggle
+            type: entity-button
+          - entity: light.eule
+            icon: 'mdi:owl'
+            tap_action:
+              action: toggle
+            type: entity-button
+        type: horizontal-stack
+      - cards:
+          - entity: light.dimmer_schlafzimmer_level
+            name: Schlafzimmer
+            tap_action:
+              action: toggle
+            type: entity-button
+          - entity: light.dimmer_flur_level
+            name: Flur
+            tap_action:
+              action: toggle
+            type: entity-button
+          - entity: light.kaktus
+            icon: 'mdi:flower'
+            tap_action:
+              action: toggle
+            type: entity-button
+          - entity: switch.robyn_switch
+            icon: 'mdi:robot-vacuum'
+            tap-action:
+              action: toggle
+            type: entity-button
+        type: horizontal-stack
+      - entities:
+          - entity: script.wohnzimmer_media_tv
+            icon: 'mdi:television-classic'
+            name: Fernsehen
+            tap_action:
+              action: call-service
+              service: script.wohnzimmer_media_tv
+          - entity: script.wohnzimmer_media_cast
+            icon: 'mdi:cast'
+            name: Cast
+            tap_action:
+              action: call-service
+              service: script.wohnzimmer_media_cast
+          - entity: script.wohnzimmer_media_radio
+            icon: 'mdi:radio'
+            name: Radio
+            tap_action:
+              action: call-service
+              service: script.wohnzimmer_media_radio
+          - entity: script.wohnzimmer_media_tagesschau
+            icon: 'mdi:earth'
+            name: Tagesschau
+            tap_action:
+              action: call-service
+              service: script.wohnzimmer_media_tagesschau
+          - entity: script.wohnzimmer_media_off
+            icon: 'mdi:television-off'
+            name: Ausschalten
+            tap_action:
+              action: call-service
+              service: script.wohnzimmer_media_off
+        show_name: true
+        show_state: false
+        title: Wohnzimmer Media
+        type: glance
+      - entity: sensor.aussen_temperatur
+        type: sensor
+    id: home
+    title: Home

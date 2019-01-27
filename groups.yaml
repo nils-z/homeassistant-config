@@ -1,0 +1,86 @@
+#Radio:
+#  name: Radio
+#  entities:
+#  - input_select.radio_station
+#  - input_select.chromecast_radio
+#  - script.radio576
+
+default_view:
+  view: yes
+  icon: mdi:home
+  entities:
+    - group.wetter
+    - vacuum.robyn
+    - group.licht
+    - group.heizung
+
+automations:
+  view: yes
+  name: Automatisierung
+  entities:
+    - group.all_automations
+
+system:
+  view: yes
+  name: system
+  entities:
+    - group.battery
+    - group.power
+    - group.speedtest
+
+wetter:
+  name: Wetter
+  entities:
+  - sun.sun
+  - sensor.dark_sky_temperature
+  - sensor.aussen_temperatur
+  - sensor.aussen_luftfeuchtigkeit
+
+licht:
+  name: Licht
+  entities:
+  - light.dimmer_schlafzimmer_level
+  - switch.licht_wohnzimmer
+  - switch.licht_esszimmer
+  - switch.stehlampe
+  - light.dimmer_flur_level
+  - binary_sensor.bewegungsmelder_flur
+  - sensor.brightness_flur
+
+heizung:
+  name: Heizung
+  entities:
+  - climate.thermostat_schlafzimmer_heat
+  - climate.thermostat_kueche_heat
+  - climate.thermostat_wzs_heat
+  - climate.thermostat_wzsw_heat
+  - climate.thermostat_wzw_heat
+  - climate.thermostat_bad_heat
+  - climate.thermostat_wc_heat
+
+battery:
+  name: Battery
+  entities:
+  - sensor.battery_thermostat_schlafzimmer
+  - sensor.battery_thermostat_kueche
+  - sensor.battery_thermostat_wzs
+  - sensor.battery_thermostat_wzsw
+  - sensor.battery_thermostat_wzw
+  - sensor.battery_thermostat_bad
+  - sensor.battery_thermostat_wc
+  - sensor.aussen_batteriespannung
+
+power:
+  name: power
+  entities:
+  - sensor.dimmer_flur_power
+  - sensor.dimmer_schlafzimmer_power
+  - sensor.licht_wohnzimmer_power_2
+  - sensor.licht_wohnzimmer_power_3
+
+speedtest:
+  name: Internet Speed
+  entities:
+  - sensor.speedtest_download
+  - sensor.speedtest_upload
+  - sensor.speedtest_ping

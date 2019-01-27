@@ -1,0 +1,86 @@
+- alias: Flur Licht an
+  trigger:
+  - platform: state
+    entity_id:  binary_sensor.bewegungsmelder_flur
+    to: 'on'
+  condition:
+    condition: or  # 'when dark' condition: either after sunset or before sunrise
+    conditions:
+      - condition: sun
+        after: sunset
+        after_offset: "-02:00:00"
+      - condition: sun
+        before: sunrise
+        before_offset: "01:00:00"
+  action:
+  - service: light.turn_on
+    data_template:
+      entity_id: light.dimmer_flur_level
+      brightness: "{{ states.sensor.brightness_flur.state }}"
+
+- alias: Flur Licht aus
+  trigger:
+  - platform: state
+    entity_id:  binary_sensor.bewegungsmelder_flur
+    to: 'off'
+    for:
+      seconds: 15
+  action:
+  - service: light.turn_off
+    data:
+      entity_id: light.dimmer_flur_level
+
+- alias: Robyn error
+  trigger:
+  - platform: state
+    entity_id: sensor.vacuum_status
+    to: 'error'
+  action:
+  - service: telegram_bot.send_message
+    data_template:
+      target: !secret telegram_id_group
+      message: 'Robyn hat ein Problem, bitte helft ihm! Vielleicht steckt er fest?'
+
+- alias: Robyn returning home
+  trigger:
+  - platform: state
+    entity_id: sensor.vacuum_status
+    from: 'returning'
+    to: 'docked'
+  action:
+  - service: telegram_bot.send_message
+    data_template:
+      target: !secret telegram_id_group
+      message: 'Robyn ist fertig, er hat in {{ states.vacuum.robyn.attributes.cleaning_time }} Minuten {{ states.vacuum.robyn.attributes.cleaned_area }} m² gesaugt!'
+
+- alias: Fabrikator finished
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.octoprint_printing
+    to: 'off'
+  action:
+  - service: telegram_bot.send_photo
+    data_template:
+      target: !secret telegram_id_nils
+      url: 'http://192.168.0.82/webcam/?action=snapshot'
+      caption: 'Druck ist fertig!'
+
+- alias: Heizung Wohnzimmer Einstellung kopieren
+  trigger:
+    - platform: state
+      entity_id: sensor.heizung_wzs_state
+    - platform: state
+      entity_id: sensor.heizung_wzs_setpoint
+  action:
+  - service: climate.set_operation_mode
+    data_template:
+      entity_id:
+        - climate.thermostat_wzsw_heat
+        - climate.thermostat_wzw_heat
+      operation_mode: '{{ states.sensor.heizung_wzs_state.state }}'
+  - service: climate.set_temperature
+    data_template:
+      entity_id:
+        - climate.thermostat_wzsw_heat
+        - climate.thermostat_wzw_heat
+      temperature: '{{ states.sensor.heizung_wzs_setpoint.state }}'

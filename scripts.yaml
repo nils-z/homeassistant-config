@@ -1,0 +1,136 @@
+radio576:
+  alias: Chromecast Radio
+  sequence:
+    - service: media_player.play_media
+      data_template:
+        entity_id: >
+          {% if is_state("input_select.chromecast_radio", "Bobbl") %} media_player.bobbl
+          {% elif is_state("input_select.chromecast_radio", "Schlafzimmer TV") %} media_player.schlafzimmer_tv
+          {% endif %}
+        media_content_id: >
+          {% if is_state("input_select.radio_station", "egoFM") %} http://mp3ad.egofm.c.nmdn.net/ps-egofm_128/livestream.mp3
+          {% elif is_state("input_select.radio_station", "Puls") %} http://br-puls-live.cast.addradio.de/br/puls/live/mp3/128/stream.mp3
+          {% endif %}
+        media_content_type: 'audio/mp4'
+
+wohnzimmer_media_off:
+  alias: Wohnzimmer Media aus
+  sequence:
+    - service: script.remote_tv_off
+    - service: script.remote_receiver_off
+#    - service: media_player.media_stop
+#      entity_id: media_player.chromecast0605
+
+wohnzimmer_media_tv:
+  alias: Wohnzimmer Fernsehen
+  sequence:
+    - service: script.remote_tv_on
+    - service: script.remote_receiver_on
+    - service: script.remote_receiver_tvcd
+    - delay:
+        seconds: 3
+    - service: script.remote_receiver_tvcd
+    - delay:
+        seconds: 8
+    - service: script.remote_tv_tv
+
+wohnzimmer_media_cast:
+  alias: Wohnzimmer Cast
+  sequence:
+    - service: script.remote_tv_on
+    - service: script.remote_receiver_on
+    - service: script.remote_receiver_bddvd
+    - service: script.remote_tv_hdmi
+    - delay:
+        seconds: 3
+    - service: script.remote_receiver_bddvd
+    - delay:
+        seconds: 8
+    - service: script.remote_tv_hdmi
+
+wohnzimmer_media_radio:
+  alias: Wohnzimmer Radio
+  sequence:
+    - service: script.remote_tv_off
+    - service: script.remote_receiver_on
+    - delay:
+        seconds: 3
+    - service: script.remote_receiver_radio
+
+wohnzimmer_media_tagesschau:
+  alias: Wohnzimmer Tagesschau
+  sequence:
+    - service: script.remote_tv_on
+    - service: script.remote_receiver_on
+    - delay:
+        seconds: 3
+    - service: script.remote_receiver_bddvd
+    - service: media_extractor.play_media
+      entity_id: media_player.chromecast0605
+      data:
+        media_content_id: "http://www.tagesschau.de/sendung/letzte-sendung/index.html"
+        media_content_type: video
+    - service: script.remote_tv_hdmi
+    - delay:
+        seconds: 10
+    - service: script.remote_tv_hdmi
+
+
+remote_tv_on:
+  sequence:
+    - service: remote.send_command
+      entity_id: remote.xiaomi_miio_192_168_0_81
+      data:
+        command: 'pronto:0000 006D 0022 0002 0157 00AC 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0016 0015 0041 0015 0041 0015 0041 0015 0041 0015 0041 0015 0041 0015 0016 0015 0041 0015 0016 0015 0041 0015 0041 0015 0041 0015 0041 0015 0041 0015 0041 0015 0016 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0689 0157 0056 0015 0E94'   
+remote_tv_off:
+  sequence:
+    - service: remote.send_command
+      entity_id: remote.xiaomi_miio_192_168_0_81
+      data:
+        command: 'pronto:0000 006D 0022 0002 0157 00AC 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0016 0015 0041 0015 0041 0015 0041 0015 0041 0015 0041 0015 0041 0015 0016 0015 0041 0015 0041 0015 0041 0015 0041 0015 0041 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0689 0157 0056 0015 0E94'   
+remote_tv_tv:
+  sequence:
+    - service: script.turn_on
+      entity_id: script.remote_tv_hdmi
+    - delay:
+        seconds: 1
+    - service: remote.send_command
+      entity_id: remote.xiaomi_miio_192_168_0_81
+      data:
+        command: 'pronto:0000 006C 0022 0002 015B 00AD 0016 0016 0016 0016 0016 0016 0016 0016 0016 0016 0016 0016 0016 0041 0016 0016 0016 0041 0016 0041 0016 0041 0016 0041 0016 0041 0016 0041 0016 0016 0016 0041 0016 0041 0016 0016 0016 0016 0016 0016 0016 0016 0016 0016 0016 0016 0016 0016 0016 0016 0016 0041 0016 0041 0016 0041 0016 0041 0016 0041 0016 0041 0016 0041 0016 05F7 015B 0057 0016 0E6C'
+remote_tv_hdmi:
+  sequence:
+    - service: remote.send_command
+      entity_id: remote.xiaomi_miio_192_168_0_81
+      data:
+        command: 'pronto:0000 006D 0022 0002 0157 00AC 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0016 0015 0041 0015 0041 0015 0041 0015 0041 0015 0041 0015 0041 0015 0016 0015 0041 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0689 0157 0056 0015 0E94'
+remote_receiver_on:
+  sequence:
+    - service: remote.send_command
+      entity_id: remote.xiaomi_miio_192_168_0_81
+      data:
+        command: 'pronto:0000 006d 0022 0002 0154 00aa 0015 0015 0015 0040 0015 0015 0015 0015 0015 0040 0015 0015 0015 0040 0015 0040 0015 0040 0015 0015 0015 0040 0015 0040 0015 0015 0015 0040 0015 0040 0015 0015 0015 0015 0015 0015 0015 0040 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0040 0015 0015 0015 0040 0015 0040 0015 0040 0015 0040 0015 0040 0015 05b8 0154 0055 0015 0e2f'
+remote_receiver_off:
+  sequence:
+    - service: remote.send_command
+      entity_id: remote.xiaomi_miio_192_168_0_81
+      data:
+        command: 'pronto:0000 006d 0022 0002 0154 00aa 0015 0015 0015 0040 0015 0015 0015 0015 0015 0040 0015 0015 0015 0040 0015 0040 0015 0015 0015 0015 0015 0040 0015 0040 0015 0015 0015 0040 0015 0040 0015 0015 0015 0040 0015 0040 0015 0040 0015 0015 0015 0015 0015 0015 0015 0040 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0040 0015 0040 0015 0015 0015 0040 0015 05e3 0154 0055 0015 0e2f'
+remote_receiver_bddvd:
+  sequence:
+    - service: remote.send_command
+      entity_id: remote.xiaomi_miio_192_168_0_81
+      data:
+        command: 'pronto:0000 006d 0022 0002 0154 00aa 0015 0015 0015 0040 0015 0015 0015 0015 0015 0040 0015 0015 0015 0040 0015 0040 0015 0015 0015 0015 0015 0040 0015 0040 0015 0015 0015 0040 0015 0040 0015 0015 0015 0015 0015 0015 0015 0040 0015 0040 0015 0015 0015 0015 0015 0015 0015 0040 0015 0040 0015 0040 0015 0015 0015 0015 0015 0040 0015 0040 0015 0040 0015 0015 0015 05e3 0154 0055 0015 0e2f'
+remote_receiver_tvcd:
+  sequence:
+    - service: remote.send_command
+      entity_id: remote.xiaomi_miio_192_168_0_81
+      data:
+        command: 'pronto:0000 006d 0022 0002 0154 00aa 0015 0015 0015 0040 0015 0015 0015 0015 0015 0040 0015 0015 0015 0040 0015 0040 0015 0040 0015 0015 0015 0040 0015 0040 0015 0015 0015 0040 0015 0040 0015 0015 0015 0040 0015 0015 0015 0015 0015 0040 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0040 0015 0015 0015 0040 0015 0040 0015 0040 0015 0040 0015 05b8 0154 0055 0015 0e2f'
+remote_receiver_radio:
+  sequence:
+    - service: remote.send_command
+      entity_id: remote.xiaomi_miio_192_168_0_81
+      data:
+        command: 'pronto:0000 006d 0022 0002 0154 00aa 0015 0015 0015 0040 0015 0015 0015 0015 0015 0040 0015 0015 0015 0040 0015 0040 0015 0040 0015 0015 0015 0040 0015 0040 0015 0015 0015 0040 0015 0040 0015 0015 0015 0040 0015 0040 0015 0015 0015 0040 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0015 0015 0040 0015 0040 0015 0040 0015 0040 0015 05b8 0154 0055 0015 0e2f'

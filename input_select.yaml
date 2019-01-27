@@ -1,0 +1,15 @@
+#radio_station:
+#  name: 'Radiosender:'
+#  options:
+#    - egoFM
+#    - Puls
+#  initial: egoFM
+#  icon: mdi:radio
+      
+#chromecast_radio:
+#  name: 'Lautsprecher:'
+#  options:
+#    - Bobbl
+#    - Schlafzimmer TV
+#  initial: Bobbl
+#  icon: mdi:speaker-wireless

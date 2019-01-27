@@ -1,0 +1,328 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret latitude_home
+  longitude: !secret longitude_home
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 180
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: Europe/Berlin
+  # Customization file
+  customize: !include customize.yaml
+
+# Enables the frontend
+frontend:
+  themes: !include themes/teal.yaml
+
+lovelace:
+  mode: yaml
+
+logger:
+  default: warn
+
+# Enables configuration UI
+config:
+
+http:
+  # Secrets are defined in the file secrets.yaml
+  # api_password: !secret http_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  base_url: !secret base_url
+#  ssl_certificate: /ssl/fullchain.pem
+#  ssl_key: /ssl/privkey.pem
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+#conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+#logbook:
+
+influxdb:
+  host: !secret ip_hassio
+  port: 8086
+  database: homeassistant
+  username: homeassistant
+  password: !secret influxdb_user_password
+  max_retries: 3
+  default_measurement: state
+  #exclude:
+  #  domains:
+  #     - automation
+
+# Enables a map showing the location of tracked devices
+#map
+
+cloud:
+  google_actions:
+    filter:
+      include_entities:
+        - light.dimmer_flur_level
+        - light.dimmer_schlafzimmer_level
+        - light.dimmer_wohnzimmer
+        - light.dimmer_esszimmer
+        - light.stehlampe
+        - light.eule
+        - light.kaktus
+        - switch.robyn_switch
+        - climate.thermostat_bad_heat
+        - climate.thermostat_kueche_heat
+        - climate.thermostat_schlafzimmer_heat
+        - climate.thermostat_wc_heat
+        - climate.thermostat_wzs_heat
+        - script.wohnzimmer_media_off
+        - script.wohnzimmer_media_radio
+        - script.wohnzimmer_media_tagesschau
+        - script.wohnzimmer_media_tv
+        - script.wohnzimmer_media_cast
+    entity_config:
+      light.dimmer_flur_level:
+        room: Flur
+      light.dimmer_schlafzimmer_level:
+        room: Schlafzimmer
+      light.dimmer_wohnzimmer:
+        room: Wohnzimmer
+      light.dimmer_esszimmer:
+        room: Esszimmer
+      light.stehlampe:
+        room: Wohnzimmer
+      light.eule:
+        room: Wohnzimmer
+      light.kaktus:
+        room: Wohnzimmer
+      switch.robyn_switch:
+        name: Robyn
+        aliases:
+         - Robin
+         - Staubsauger
+         - Staubsaugerroboter
+        room: Wohnzimmer
+      climate.thermostat_bad_heat:
+        room: Bad
+      climate.thermostat_kueche_heat:
+        room: Küche
+      climate.thermostat_schlafzimmer_heat:
+        room: Schlafzimmer
+      climate.thermostat_wc_heat:
+        room: WC
+      climate.thermostat_wzs_heat:
+        room: Wohnzimmer
+      script.wohnzimmer_media_off:
+        room: Wohnzimmer
+      script.wohnzimmer_media_radio:
+        room: Wohnzimmer
+      script.wohnzimmer_media_tagesschau:
+        room: Wohnzimmer
+      script.wohnzimmer_media_tv:
+        room: Wohnzimmer
+      script.wohnzimmer_media_cast:
+        room: Wohnzimmer
+
+# Track the sun
+sun:
+
+# Weather prediction
+weather:
+  - platform: darksky
+    api_key: !secret darksky_apikey
+    scan_interval: 600
+
+# Text to speech
+tts:
+  - platform: google
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+switch: !include switches.yaml
+#input_select: !include input_select.yaml
+sensor: !include sensors.yaml
+
+media_extractor:
+
+zwave:
+  usb_path: /dev/ttyACM0
+  network_key: !secret zwave_network_key
+  config_path: zwave_config
+#  device_config:
+#    light.dimmer_flur_level:
+#      refresh_value: true
+#      delay: 4
+#    light.dimmer_schlafzimmer_level:
+#      refresh_value: true
+#      delay: 4
+
+octoprint:
+  host: !secret ip_octoprint
+  api_key: !secret octoprint_apikey
+  bed: false
+  number_of_tools: 1
+
+  
+vacuum:
+  - platform: xiaomi_miio
+    host: !secret ip_robyn
+    token: !secret xiaomi_token
+    name: Robyn
+
+remote:
+  - platform: xiaomi_miio
+    host: !secret ip_ir_remote
+    token: !secret xiaomi_token_chinese
+    slot: 1
+
+mqtt:
+  broker: localhost
+  username: !secret mqtt_user
+  password: !secret mqtt_password
+
+mqtt_statestream:
+  base_topic: homeassistant
+  publish_attributes: false
+  publish_timestamps: false
+  include:
+    entities:
+      - sensor.time
+      - sensor.date
+      - sensor.dark_sky_daily_high_temperature
+      - sensor.dark_sky_daily_high_temperature_1
+      - sensor.dark_sky_daily_high_temperature_2
+      - sensor.dark_sky_daily_high_temperature_3
+      - sensor.dark_sky_daily_low_temperature
+      - sensor.dark_sky_daily_low_temperature_1
+      - sensor.dark_sky_daily_low_temperature_2
+      - sensor.dark_sky_daily_low_temperature_3
+      - sensor.dark_sky_hourly_summary
+      - sensor.dark_sky_icon
+      - sensor.dark_sky_icon_1
+      - sensor.dark_sky_icon_2
+      - sensor.dark_sky_icon_3
+      - sensor.dark_sky_precip_probability
+      - sensor.dark_sky_precip_probability_1
+      - sensor.dark_sky_precip_probability_2
+      - sensor.dark_sky_precip_probability_3
+      - sensor.dark_sky_summary
+      - sensor.dark_sky_temperature
+      - sensor.thermostat_schlafzimmer_temperature
+      - sensor.mean_wohnzimmer_temperature
+      - sensor.thermostat_kueche_temperature
+      - sensor.aussen_temperatur
+
+binary_sensor:
+  - platform: mqtt
+    name: "Bewegungsmelder Flur"
+    state_topic: "homie/600194008996/motion/motion"
+    availability_topic: "homie/600194008996/$online"
+    payload_available: "true"
+    payload_not_available: "false"
+    device_class: "motion"
+  - platform: octoprint
+    monitored_conditions:
+      - Printing
+
+ffmpeg:
+
+camera:
+  - platform: mjpeg
+    name: camera_fabrikator
+    mjpeg_url: !secret octoprint_mjpeg_url
+    still_image_url: !secret octoprint_still_image_url
+
+input_boolean:
+  switch_ac_kitchen:
+    name: AC kitchen
+  switch_ac_livingroom:
+    name: AC living room
+  switch_tv:
+    name: TV
+
+telegram_bot:
+  - platform: broadcast
+    api_key: !secret telegram_apikey
+    allowed_chat_ids:
+      - !secret telegram_id_nils
+      - !secret telegram_id_group
+
+light:
+  - platform: template
+    lights:
+      wohnzimmer:
+        friendly_name: "Wohnzimmer"
+        value_template: "{{ states.switch.licht_wohnzimmer.state == 'on' }}"
+        turn_on:
+          service: switch.turn_on
+          data:
+            entity_id: switch.licht_wohnzimmer
+        turn_off:
+          service: switch.turn_off
+          data:
+            entity_id: switch.licht_wohnzimmer
+      esszimmer:
+        friendly_name: "Esszimmer"
+        value_template: "{{ states.switch.licht_esszimmer.state == 'on' }}"
+        turn_on:
+          service: switch.turn_on
+          data:
+            entity_id: switch.licht_esszimmer
+        turn_off:
+          service: switch.turn_off
+          data:
+            entity_id: switch.licht_esszimmer
+  - platform: mqtt
+    name: 'Stern'
+    state_topic: 'particle/rgb-star/light/status'
+    command_topic: 'particle/rgb-star/light/switch'
+    brightness_state_topic: 'particle/rgb-star/brightness/status'
+    brightness_command_topic: 'particle/rgb-star/brightness/set'
+    rgb_state_topic: 'particle/rgb-star/rgb/status'
+    rgb_command_topic: 'particle/rgb-star/rgb/set'
+    white_value_state_topic: 'particle/rgb-star/white/status'
+    white_value_command_topic: 'particle/rgb-star/white/set'
+    brightness_scale: 255
+    optimistic: false
+  - platform: mqtt
+    schema: json
+    name: 'Eule'
+    state_topic: "particle/rgbw-owl"
+    command_topic: "particle/rgbw-owl/set"
+    availability_topic: "particle/rgbw-owl/availability"
+    brightness: true
+    rgb: true
+  - platform: mqtt
+    name: "Stehlampe"
+    state_topic: "stat/sonoff_wz-stehlampe/POWER"
+    command_topic: "cmnd/sonoff_wz-stehlampe/POWER"
+    availability_topic: "tele/sonoff_wz-stehlampe/LWT"
+    #state_value_template: "{{ value_json.state }}"
+    qos: 0
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+  - platform: mqtt
+    name: "Kaktus"
+    state_topic: "stat/sonoff_wz-kaktus/POWER"
+    command_topic: "cmnd/sonoff_wz-kaktus/POWER"
+    availability_topic: "tele/sonoff_wz-kaktus/LWT"
+    #state_value_template: "{{ value_json.state }}"
+    qos: 0
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+
+
+device_tracker:
+  - platform: nmap_tracker
+    hosts:
+      - !secret ip_m
+      - !secret ip_n
+    home_interval: 10
