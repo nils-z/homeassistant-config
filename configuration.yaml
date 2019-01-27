@@ -236,42 +236,6 @@ telegram_bot:
       - !secret telegram_id_group
 
 light:
-  - platform: template
-    lights:
-      wohnzimmer:
-        friendly_name: "Wohnzimmer"
-        value_template: "{{ states.switch.licht_wohnzimmer.state == 'on' }}"
-        turn_on:
-          service: switch.turn_on
-          data:
-            entity_id: switch.licht_wohnzimmer
-        turn_off:
-          service: switch.turn_off
-          data:
-            entity_id: switch.licht_wohnzimmer
-      esszimmer:
-        friendly_name: "Esszimmer"
-        value_template: "{{ states.switch.licht_esszimmer.state == 'on' }}"
-        turn_on:
-          service: switch.turn_on
-          data:
-            entity_id: switch.licht_esszimmer
-        turn_off:
-          service: switch.turn_off
-          data:
-            entity_id: switch.licht_esszimmer
-  - platform: mqtt
-    name: 'Stern'
-    state_topic: 'particle/rgb-star/light/status'
-    command_topic: 'particle/rgb-star/light/switch'
-    brightness_state_topic: 'particle/rgb-star/brightness/status'
-    brightness_command_topic: 'particle/rgb-star/brightness/set'
-    rgb_state_topic: 'particle/rgb-star/rgb/status'
-    rgb_command_topic: 'particle/rgb-star/rgb/set'
-    white_value_state_topic: 'particle/rgb-star/white/status'
-    white_value_command_topic: 'particle/rgb-star/white/set'
-    brightness_scale: 255
-    optimistic: false
   - platform: mqtt
     schema: json
     name: 'Eule'
@@ -285,7 +249,6 @@ light:
     state_topic: "stat/sonoff_wz-stehlampe/POWER"
     command_topic: "cmnd/sonoff_wz-stehlampe/POWER"
     availability_topic: "tele/sonoff_wz-stehlampe/LWT"
-    #state_value_template: "{{ value_json.state }}"
     qos: 0
     payload_on: "ON"
     payload_off: "OFF"
@@ -296,7 +259,6 @@ light:
     state_topic: "stat/sonoff_wz-kaktus/POWER"
     command_topic: "cmnd/sonoff_wz-kaktus/POWER"
     availability_topic: "tele/sonoff_wz-kaktus/LWT"
-    #state_value_template: "{{ value_json.state }}"
     qos: 0
     payload_on: "ON"
     payload_off: "OFF"
