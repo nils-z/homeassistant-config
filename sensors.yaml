@@ -1,19 +1,5 @@
 - platform: template
   sensors:
-    brightness_flur:
-      friendly_name: "Tageszeitdimmer Flur Helligkeit"
-      value_template: >-
-        {% if is_state('sun.sun', 'above_horizon') %}
-          40
-        {% elif states("sensor.time") >= '22:00' and states("sensor.time") < '23:00' %}
-          30
-        {% elif states("sensor.time") >= '23:00' or states("sensor.time") < '07:30' %}
-          5
-        {% elif states("sensor.time") >= '07:30' and states("sensor.time") < '10:00' %}
-          30
-        {% else %}
-          100
-        {% endif %}
     battery_thermostat_schlafzimmer:
       value_template: "{{ states.zwave.thermostat_schlafzimmer.attributes.battery_level }}"
       unit_of_measurement: '%'
@@ -106,6 +92,8 @@
 
 - platform: octoprint
   name: Fabrikator
+  number_of_tools: 1
+  bed: false
   monitored_conditions:
     - Current State
     - Temperatures
@@ -126,24 +114,3 @@
       value_template: "{{ states.vacuum.robyn.attributes.battery_level }}"
       device_class: battery
       unit_of_measurement: '%'
-
-- platform: template
-  sensors:
-    heizung_wzs_state:
-      friendly_name: "Status Heizung WZS"
-      value_template: "{{ states.climate.thermostat_wzs_heat.attributes.operation_mode }}"
-    heizung_wzs_setpoint:
-      friendly_name: "Setpoint Heizung WZS"
-      value_template: "{{ states.climate.thermostat_wzs_heat.attributes.temperature }}"
-    heizung_wzsw_state:
-      friendly_name: "Status Heizung WZSW"
-      value_template: "{{ states.climate.thermostat_wzsw_heat.attributes.operation_mode }}"
-    heizung_wzsw_setpoint:
-      friendly_name: "Setpoint Heizung WZSW"
-      value_template: "{{ states.climate.thermostat_wzsw_heat.attributes.temperature }}"
-    heizung_wzw_state:
-      friendly_name: "Status Heizung WZW"
-      value_template: "{{ states.climate.thermostat_wzw_heat.attributes.operation_mode }}"
-    heizung_wzw_setpoint:
-      friendly_name: "Setpoint Heizung WZW"
-      value_template: "{{ states.climate.thermostat_wzw_heat.attributes.temperature }}"
