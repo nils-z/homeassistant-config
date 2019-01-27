@@ -21,24 +21,15 @@ lovelace:
   mode: yaml
 
 logger:
-  default: warn
+#  default: warn
 
 # Enables configuration UI
 config:
 
 http:
-  # Secrets are defined in the file secrets.yaml
-  # api_password: !secret http_password
-  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
   base_url: !secret base_url
-#  ssl_certificate: /ssl/fullchain.pem
-#  ssl_key: /ssl/privkey.pem
 
 # Discover some devices automatically
-discovery:
-
-# Allows you to issue voice commands from the frontend in enabled browsers
-#conversation:
 
 # Enables support for tracking state changes over time
 history:
@@ -54,12 +45,6 @@ influxdb:
   password: !secret influxdb_user_password
   max_retries: 3
   default_measurement: state
-  #exclude:
-  #  domains:
-  #     - automation
-
-# Enables a map showing the location of tracked devices
-#map
 
 cloud:
   google_actions:
@@ -139,11 +124,10 @@ weather:
 tts:
   - platform: google
 
-group: !include groups.yaml
+#group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
 switch: !include switches.yaml
-#input_select: !include input_select.yaml
 sensor: !include sensors.yaml
 
 media_extractor:
