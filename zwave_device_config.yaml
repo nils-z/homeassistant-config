@@ -1,0 +1,6 @@
+climate.thermostat_bad_furnace:
+  ignored: true
+  polling_intensity: 0
+climate.thermostat_bad_heat_eco:
+  ignored: true
+  polling_intensity: 0

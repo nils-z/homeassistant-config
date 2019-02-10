@@ -21,7 +21,7 @@ lovelace:
   mode: yaml
 
 logger:
-#  default: warn
+  default: info
 
 # Enables configuration UI
 config:
@@ -273,3 +273,5 @@ device_tracker:
       - !secret ip_m
       - !secret ip_n
     home_interval: 10
+    consider_home: 600
+    interval_seconds: 60

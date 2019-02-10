@@ -47,6 +47,9 @@ wohnzimmer_media_cast:
     - delay:
         seconds: 8
     - service: script.remote_tv_hdmi
+    - delay:
+        seconds: 5
+    - service: script.remote_tv_hdmi
 
 wohnzimmer_media_radio:
   alias: Wohnzimmer Radio

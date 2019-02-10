@@ -101,5 +101,14 @@ views:
         type: glance
       - entity: sensor.aussen_temperatur
         type: sensor
+      - type: glance
+        entities:
+          - entity: sensor.mo_temp
+            name: Temperatur
+          - entity: sensor.mo_hum
+            name: Luftfeuchtigkeit
+          - entity: sensor.mo_bat
+            name: Akku
+            icon: mdi:battery
     id: home
     title: Home
