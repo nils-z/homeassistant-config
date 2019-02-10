@@ -29,11 +29,23 @@ config:
 http:
   base_url: !secret base_url
 
-# Discover some devices automatically
 discovery:
+  ignore:
+    - igd
 
-# Enables support for tracking state changes over time
+recorder:
+  exclude:
+    domains:
+     - zwave
+
 history:
+  exclude:
+    domains:
+      - automation
+      - zwave
+      - sun
+    entities:
+      - sensor.time
 
 # View all events in a logbook
 #logbook:
@@ -245,26 +257,6 @@ light:
     availability_topic: "particle/rgbw-owl/availability"
     brightness: true
     rgb: true
-  - platform: mqtt
-    name: "Stehlampe"
-    state_topic: "stat/sonoff_wz-stehlampe/POWER"
-    command_topic: "cmnd/sonoff_wz-stehlampe/POWER"
-    availability_topic: "tele/sonoff_wz-stehlampe/LWT"
-    qos: 0
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-  - platform: mqtt
-    name: "Kaktus"
-    state_topic: "stat/sonoff_wz-kaktus/POWER"
-    command_topic: "cmnd/sonoff_wz-kaktus/POWER"
-    availability_topic: "tele/sonoff_wz-kaktus/LWT"
-    qos: 0
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
 
 
 device_tracker:
