@@ -70,6 +70,7 @@ cloud:
         - light.stehlampe
         - light.eule
         - light.kaktus
+        - light.neopixellight
         - switch.robyn_switch
         - climate.thermostat_bad_heat
         - climate.thermostat_kueche_heat
@@ -96,6 +97,9 @@ cloud:
         room: Wohnzimmer
       light.kaktus:
         room: Wohnzimmer
+      light.neopixellight:
+        name: Schrank
+        room: Schlafzimmer
       switch.robyn_switch:
         name: Robyn
         aliases:
@@ -267,3 +271,12 @@ device_tracker:
     home_interval: 10
     consider_home: 600
     interval_seconds: 60
+
+speedtestdotnet:
+  monitored_conditions:
+    - ping
+    - download
+    - upload
+  scan_interval:
+    hours: 6
+#  server_id: 8040

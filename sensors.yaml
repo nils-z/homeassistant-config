@@ -56,18 +56,6 @@
   update_interval:
     minutes: 10
 
-- platform: speedtest
-  monitored_conditions:
-    - ping
-    - download
-    - upload
-  hour:
-    - 0
-    - 6
-    - 12
-    - 18
-#  server_id: 8040
-
 - platform: mqtt
   name: "Außen Temperatur"
   unit_of_measurement: "°C"
