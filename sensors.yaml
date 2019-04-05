@@ -53,7 +53,7 @@
     - icon
     - temperature
     - precip_probability
-  update_interval:
+  scan_interval:
     minutes: 10
 
 - platform: mqtt
