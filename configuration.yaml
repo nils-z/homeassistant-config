@@ -138,10 +138,6 @@ weather:
     scan_interval: 600
     mode: daily
 
-# Text to speech
-tts:
-  - platform: google
-
 #group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
