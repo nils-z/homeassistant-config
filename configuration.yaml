@@ -263,16 +263,6 @@ light:
     brightness: true
     rgb: true
 
-
-device_tracker:
-  - platform: nmap_tracker
-    hosts:
-      - !secret ip_m
-      - !secret ip_n
-    home_interval: 10
-    consider_home: 600
-    interval_seconds: 60
-
 speedtestdotnet:
   monitored_conditions:
     - ping
