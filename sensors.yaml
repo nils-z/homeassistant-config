@@ -5,7 +5,7 @@
       unit_of_measurement: '%'
       device_class: battery
     battery_thermostat_kueche:
-      value_template: "{{ states.zwave.thermostat_kuche.attributes.battery_level }}"
+      value_template: "{{ states.zwave.thermostat_kueche.attributes.battery_level }}"
       unit_of_measurement: '%'
       device_class: battery
     battery_thermostat_wzs:
@@ -41,6 +41,7 @@
 - platform: darksky
   api_key: !secret darksky_apikey
   forecast:
+    - 0
     - 1
     - 2
     - 3
@@ -48,8 +49,8 @@
   monitored_conditions:
     - summary
     - hourly_summary
-    - temperature_min
-    - temperature_max
+    - temperature_low
+    - temperature_high
     - icon
     - temperature
     - precip_probability
